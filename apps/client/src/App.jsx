@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import DashboardPage from './pages/DashboardPage';
 import PlayerDetailPage from './pages/PlayerDetailPage';
 import TeamDetailPage from './pages/TeamDetailPage';
+import GameCenterPage from './pages/GameCenterPage';
 import useSocketStore from './store/socketStore';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route index element={<DashboardPage />} />
         <Route path="players/:id" element={<PlayerDetailPage />} />
         <Route path="teams/:id" element={<TeamDetailPage />} />
+        <Route path="game-center" element={<GameCenterPage />} />
       </Route>
     </Routes>
   );

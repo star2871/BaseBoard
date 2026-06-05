@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import io from 'socket.io-client';
 import usePlayerStore from './playerStore';
+import useGameStore from './gameStore';
 
 const useSocketStore = create((set, get) => ({
   socket: null,
@@ -27,8 +28,7 @@ const useSocketStore = create((set, get) => ({
     // Add listener for live game updates
     socket.on('game:live:updated', (game) => {
       console.log('Global listener received live game update:', game);
-      // Here you would update a game store, e.g.:
-      // useGameStore.getState().updateLiveGame(game);
+      useGameStore.getState().updateLiveGame(game);
     });
   },
   disconnect: () => {
