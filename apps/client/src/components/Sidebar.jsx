@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, BarChart3, Map, FileText, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, BarChart3, Map, FileText, Settings, Trophy } from 'lucide-react';
 import ProfileModal from './modals/ProfileModal';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Real-time Game Center', href: '/game-center', icon: Trophy },
   { name: 'Team & Players', href: '/teams', icon: Users },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Travel & Schedule', href: '/travel', icon: Map },
@@ -20,7 +21,7 @@ const Sidebar = () => {
     <aside className="w-64 bg-surface-secondary p-4 flex flex-col border-r border-border-color">
       <div className="flex items-center mb-10 px-2">
         <div className="w-8 h-8 bg-primary rounded-md mr-3 flex-shrink-0"></div>
-        <h1 className="text-xl font-bold text-text-primary">YOLO-Bat</h1>
+        <h1 className="text-xl font-bold text-text-primary">BASEBOARD</h1>
       </div>
       <nav className="flex-1">
         <ul>
