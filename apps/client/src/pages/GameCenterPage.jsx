@@ -8,7 +8,11 @@ const GameCenterPage = () => {
   useEffect(() => {
     const fetchLiveGame = async () => {
       try {
-        const response = await fetch('/api/games/next'); // Using next as a proxy for current live game
+        const response = await fetch('/api/games/live');
+        if (response.status === 404) {
+          setLiveGame(null);
+          return;
+        }
         const data = await response.json();
         setLiveGame(data);
       } catch (error) {
@@ -18,7 +22,12 @@ const GameCenterPage = () => {
     fetchLiveGame();
   }, [setLiveGame]);
 
-  if (!liveGame) return <div className="text-center p-10">Loading live game...</div>;
+  if (!liveGame) return (
+    <div className="flex flex-col items-center justify-center p-20 space-y-4">
+      <div className="text-2xl font-bold text-text-secondary">현재 진행 중인 경기가 없습니다.</div>
+      <p className="text-text-secondary">다음 경기 일정을 확인해 주세요.</p>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -109,15 +118,19 @@ const GameCenterPage = () => {
   );
 };
 
-const BaseRunner = ({ pos, active }) => (
-  <div className={`absolute w-6 h-6 rounded-full ${active ? 'bg-primary shadow-lg scale-110' : 'bg-surface-tertiary'} transition-all duration-300`}
-    style={{
-      ${pos === 'first' ? 'bottom: 20px; right: 20px;' : ''}
-      ${pos === 'second' ? 'top: 20px; right: 20px;' : ''}
-      // Note: The above style logic is slightly flawed for rotated square, 
-      // but this is the placeholder for the layout.
-    }}
-  />
-);
+const BaseRunner = ({ pos, active }) => {
+  const positions = {
+    first: { bottom: '20px', right: '20px' },
+    second: { top: '20px', right: '20px' },
+    third: { top: '20px', left: '20px' },
+  };
+
+  return (
+    <div 
+      className={`absolute w-6 h-6 rounded-full ${active ? 'bg-primary shadow-lg scale-110' : 'bg-surface-tertiary'} transition-all duration-300`}
+      style={positions[pos] || {}}
+    />
+  );
+};
 
 export default GameCenterPage;

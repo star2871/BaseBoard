@@ -3,6 +3,25 @@ import Game from '../models/Game.js';
 
 const router = express.Router();
 
+// @desc    Fetch the current live game
+// @route   GET /api/games/live
+// @access  Public
+router.get('/live', async (req, res) => {
+  try {
+    const liveGame = await Game.findOne({ status: 'InProgress' })
+      .populate('homeTeam', 'name logoUrl')
+      .populate('awayTeam', 'name logoUrl');
+
+    if (liveGame) {
+      res.json(liveGame);
+    } else {
+      res.status(404).json({ message: 'No live games currently in progress.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 // @desc    Fetch the next scheduled game
 // @route   GET /api/games/next
 // @access  Public
