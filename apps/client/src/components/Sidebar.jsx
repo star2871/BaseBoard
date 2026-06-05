@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, BarChart3, Map, FileText, Settings, Trophy } from 'lucide-react';
-import ProfileModal from './modals/ProfileModal';
+import ProfileModal from './ProfileModal';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },

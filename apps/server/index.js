@@ -2,7 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js';
+import connectDB from './db.js';
 
 import playerRoutes from './routes/players.js';
 import teamRoutes from './routes/teams.js';

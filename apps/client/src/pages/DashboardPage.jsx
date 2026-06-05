@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSocketStore from '../store/socketStore';
 import { Bell, Zap } from 'lucide-react';
-import NextGameWidget from '../components/widgets/NextGameWidget';
-import TeamRankingsWidget from '../components/widgets/TeamRankingsWidget';
+import NextGameWidget from '../components/NextGameWidget';
+import TeamRankingsWidget from '../components/TeamRankingsWidget';
 import PlayerStatusBoard from '../components/PlayerStatusBoard';
 
 const DashboardPage = () => {
