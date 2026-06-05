@@ -1,0 +1,27 @@
+{
+  "name": "fatigue-engine",
+  "version": "1.0.0",
+  "description": "Core logic for calculating player fatigue",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/star2871/BaseBoard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/star2871/BaseBoard/issues"
+  },
+  "homepage": "https://github.com/star2871/BaseBoard#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
+}
