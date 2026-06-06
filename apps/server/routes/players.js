@@ -1,7 +1,7 @@
 import express from 'express';
 import Player from '../models/Player.js';
 import Game from '../models/Game.js';
-import { calculateFatigue, getFatigueLevel } from '../../../../packages/fatigue-engine/index.js';
+import { calculateFatigue, getFatigueLevel } from '../../../packages/fatigue-engine/index.js';
 
 const router = express.Router();
 
