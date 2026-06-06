@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import FatigueChart from '../components/charts/FatigueChart';
-import GameDetailModal from '../components/modals/GameDetailModal';
+import FatigueChart from '../components/FatigueChart';
+import GameDetailModal from '../components/GameDetailModal';
 
 const PlayerDetailPage = () => {
   const { id } = useParams();
@@ -62,27 +62,27 @@ const PlayerDetailPage = () => {
     }
   };
 
-  if (loading) return <div className="flex justify-center items-center h-full"><Loader2 className="animate-spin mr-2" /> Loading player details...</div>;
-  if (error) return <div className="text-danger p-4 bg-red-900/20 rounded-md">Error: {error}</div>;
-  if (!player) return <div className="text-warning">Player data not available.</div>;
+  if (loading) return <div className="flex justify-center items-center h-full"><Loader2 className="animate-spin mr-2" /> 선수 정보를 불러오는 중...</div>;
+  if (error) return <div className="text-danger p-4 bg-red-900/20 rounded-md">에러: {error}</div>;
+  if (!player) return <div className="text-warning">선수 데이터가 없습니다.</div>;
 
   return (
     <div>
       <h1 className="text-3xl font-bold text-text-primary mb-4">{player.name} - {player.position}</h1>
       <div className="p-6 bg-surface-secondary rounded-lg border border-border-color grid grid-cols-1 md:grid-cols-2 gap-4">
-        <p className="text-text-secondary"><strong>Team:</strong> <span className="text-text-primary">{player.team?.name || 'N/A'}</span></p>
-        <p className="text-text-secondary"><strong>Status:</strong> <span className="text-text-primary">{player.status}</span></p>
-        <p className="text-text-secondary"><strong>Fatigue Score:</strong> <span className="text-text-primary">{player.fatigueScore.toFixed(1)}</span></p>
-        <p className="text-text-secondary"><strong>Fatigue Level:</strong> <span className="text-text-primary">{player.fatigueLevel}</span></p>
+        <p className="text-text-secondary"><strong>소속팀:</strong> <span className="text-text-primary">{player.team?.name || '정보 없음'}</span></p>
+        <p className="text-text-secondary"><strong>상태:</strong> <span className="text-text-primary">{player.status}</span></p>
+        <p className="text-text-secondary"><strong>피로도 점수:</strong> <span className="text-text-primary">{player.fatigueScore.toFixed(1)}</span></p>
+        <p className="text-text-secondary"><strong>피로도 수준:</strong> <span className="text-text-primary">{player.fatigueLevel}</span></p>
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold text-text-primary mb-4">Fatigue History</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-4">피로도 변화 추이</h2>
         <FatigueChart data={player.fatigueHistory} onPointClick={handleChartClick} />
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold text-text-primary mb-4">Recent Games</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-4">최근 경기 기록</h2>
         {recentGames.length > 0 ? (
           <div className="space-y-3">
             {recentGames.map(game => {
@@ -99,13 +99,13 @@ const PlayerDetailPage = () => {
                   </div>
                   <div className="text-right">
                     <p className={`text-lg font-bold ${won ? 'text-success' : 'text-danger'}`}>{playerScore} - {opponentScore}</p>
-                    <p className={`text-sm font-semibold ${won ? 'text-success' : 'text-danger'}`}>{won ? 'WIN' : 'LOSS'}</p>
+                    <p className={`text-sm font-semibold ${won ? 'text-success' : 'text-danger'}`}>{won ? '승리' : '패배'}</p>
                   </div>
                 </div>
               );
             })}
           </div>
-        ) : ( <p className="text-text-secondary p-4 bg-surface-secondary rounded-lg border border-border-color">No recent game data available.</p> )}
+        ) : ( <p className="text-text-secondary p-4 bg-surface-secondary rounded-lg border border-border-color">최근 경기 데이터가 없습니다.</p> )}
       </div>
 
       <GameDetailModal isOpen={isGameModalOpen} onClose={() => setGameModalOpen(false)} game={selectedGame} />

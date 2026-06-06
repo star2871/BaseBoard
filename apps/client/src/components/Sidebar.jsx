@@ -4,13 +4,13 @@ import { LayoutDashboard, Users, BarChart3, Map, FileText, Settings, Trophy } fr
 import ProfileModal from './ProfileModal';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Real-time Game Center', href: '/game-center', icon: Trophy },
-  { name: 'Team & Players', href: '/teams', icon: Users },
-  { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-  { name: 'Travel & Schedule', href: '/travel', icon: Map },
-  { name: 'Reports', href: '/reports', icon: FileText },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: '대시보드', href: '/', icon: LayoutDashboard },
+  { name: '실시간 경기 센터', href: '/game-center', icon: Trophy },
+  { name: '팀 및 선수', href: '/teams', icon: Users },
+  { name: '분석', href: '/analytics', icon: BarChart3 },
+  { name: '이동 및 일정', href: '/travel', icon: Map },
+  { name: '리포트', href: '/reports', icon: FileText },
+  { name: '설정', href: '/settings', icon: Settings },
 ];
 
 const Sidebar = () => {
@@ -28,35 +28,35 @@ const Sidebar = () => {
           {navigation.map((item) => (
             <li key={item.name}>
               <NavLink
-                to={item.href}
-                className={({ isActive }) =>
-                  `flex items-center px-3 py-2 my-1 rounded-md text-sm font-medium ${
-                    isActive
-                      ? 'bg-primary text-white'
-                      : 'text-text-secondary hover:bg-gray-700 hover:text-white'
-                  }`
-                }
+              to={item.href}
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 my-1 rounded-md text-sm font-medium ${
+                  isActive
+                    ? 'bg-primary text-white'
+                    : 'text-text-secondary hover:bg-surface-tertiary hover:text-white'
+                }`
+              }
               >
-                <item.icon className="w-5 h-5 mr-3" />
-                {item.name}
+              <item.icon className="w-5 h-5 mr-3" />
+              {item.name}
               </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="mt-auto">
-        <div className="flex items-center p-2 rounded-md hover:bg-gray-700 cursor-pointer" onClick={() => setProfileModalOpen(true)}>
-            <img className="w-10 h-10 bg-gray-500 rounded-full mr-3 object-cover" src="https://i.pravatar.cc/150?u=coachkim" alt="Coach Kim" />
-            <div>
-                <p className="text-sm font-semibold text-text-primary">Coach Kim</p>
-                <p className="text-xs text-text-secondary">Head Coach</p>
-            </div>
-        </div>
-      </div>
-    </aside>
-    <ProfileModal isOpen={isProfileModalOpen} onClose={() => setProfileModalOpen(false)} />
-    </>
-  );
-};
+              </li>
+              ))}
+              </ul>
+              </nav>
+              <div className="mt-auto">
+              <div className="flex items-center p-2 rounded-md hover:bg-surface-tertiary cursor-pointer" onClick={() => setProfileModalOpen(true)}>
+              <img className="w-10 h-10 bg-surface-tertiary rounded-full mr-3 object-cover" src="https://i.pravatar.cc/150?u=coachkim" alt="Coach Kim" />
+              <div>
+              <p className="text-sm font-semibold text-text-primary">김 감독</p>
+              <p className="text-xs text-text-secondary">헤드 코치</p>
+              </div>
+              </div>
+              </div>
+              </aside>
+              <ProfileModal isOpen={isProfileModalOpen} onClose={() => setProfileModalOpen(false)} />
+              </>
+              );
+              };
 
 export default Sidebar;

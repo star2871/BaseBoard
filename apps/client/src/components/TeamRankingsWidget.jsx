@@ -34,13 +34,13 @@ const TeamRankingsWidget = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <div className="flex items-center justify-center h-full text-text-secondary"><Loader2 className="animate-spin mr-2" /> Loading Rankings...</div>;
+      return <div className="flex items-center justify-center h-full text-text-secondary"><Loader2 className="animate-spin mr-2" /> 팀 순위 불러오는 중...</div>;
     }
     if (error) {
       return <p className="text-danger">{error}</p>;
     }
     if (rankings.length === 0) {
-      return <p className="text-text-secondary">No ranking data available.</p>;
+      return <p className="text-text-secondary">순위 데이터가 없습니다.</p>;
     }
 
     return (
@@ -48,11 +48,11 @@ const TeamRankingsWidget = () => {
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-secondary uppercase">
             <tr>
-              <th scope="col" className="px-2 py-2">#</th>
-              <th scope="col" className="px-2 py-2">Team</th>
-              <th scope="col" className="px-2 py-2 text-center">W</th>
-              <th scope="col" className="px-2 py-2 text-center">L</th>
-              <th scope="col" className="px-2 py-2 text-right">PCT</th>
+              <th scope="col" className="px-2 py-2">순위</th>
+              <th scope="col" className="px-2 py-2">팀명</th>
+              <th scope="col" className="px-2 py-2 text-center">승</th>
+              <th scope="col" className="px-2 py-2 text-center">패</th>
+              <th scope="col" className="px-2 py-2 text-right">승률</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +74,7 @@ const TeamRankingsWidget = () => {
   return (
     <div>
       <h2 className="text-xl font-semibold text-text-primary mb-3 flex items-center">
-        <Trophy className="mr-2 text-warning" /> Team Rankings
+        <Trophy className="mr-2 text-warning" /> 팀 순위
       </h2>
       <div className="p-4 bg-surface-secondary rounded-lg border border-border-color min-h-[200px]">
         {renderContent()}

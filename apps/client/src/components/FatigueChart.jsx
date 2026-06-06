@@ -4,7 +4,7 @@ const FatigueChart = ({ data, onPointClick }) => {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-64 bg-surface-secondary rounded-lg border border-border-color">
-        <p className="text-text-secondary">No fatigue history data available to display chart.</p>
+        <p className="text-text-secondary">표시할 피로도 기록 데이터가 없습니다.</p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ const FatigueChart = ({ data, onPointClick }) => {
             labelStyle={{ color: '#9CA3AF' }}
           />
           <Legend wrapperStyle={{ color: '#F9FAFB' }} />
-          <Line type="monotone" dataKey="score" name="Fatigue Score" stroke="#3B82F6" activeDot={{ r: 8, style: { cursor: onPointClick ? 'pointer' : 'default' } }} dot={{ style: { cursor: onPointClick ? 'pointer' : 'default' } }} />
+          <Line type="monotone" dataKey="score" name="피로도 점수" stroke="#3B82F6" activeDot={{ r: 8, style: { cursor: onPointClick ? 'pointer' : 'default' } }} dot={{ style: { cursor: onPointClick ? 'pointer' : 'default' } }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -1,28 +1,39 @@
 import React from 'react';
 
-const BaseRunner = ({ pos, active }) => {
-  const positions = {
-    first: { bottom: '20px', right: '20px' },
-    second: { top: '20px', right: '20px' },
-    third: { top: '20px', left: '20px' },
-  };
-
+const Base = ({ active, label }) => {
   return (
-    <div 
-      className={`absolute w-6 h-6 rounded-full ${active ? 'bg-primary shadow-lg scale-110' : 'bg-surface-tertiary'} transition-all duration-300`}
-      style={positions[pos] || {}}
-    />
+    <div
+      className={`w-12 h-12 transform rotate-45 flex items-center justify-center border-4 ${
+        active 
+          ? 'bg-primary border-primary shadow-[0_0_15px_rgba(var(--color-primary),0.6)]' 
+          : 'bg-surface-secondary border-surface-tertiary'
+      } transition-all duration-300 z-10`}
+    >
+      <div className="transform -rotate-45 text-xs font-bold text-white">
+        {active && label}
+      </div>
+    </div>
   );
 };
 
-const RunnersOnBase = ({ runners }) => {
+const RunnersOnBase = ({ runners = { first: false, second: false, third: false } }) => {
   return (
-    <div className="mt-8 flex justify-center">
-      <div className="relative w-48 h-48 border-2 border-surface-tertiary rounded-lg rotate-45">
-        <BaseRunner pos="first" active={runners.first} />
-        <BaseRunner pos="second" active={runners.second} />
-        <BaseRunner pos="third" active={runners.third} />
+    <div className="relative w-48 h-48 flex items-center justify-center mt-4">
+      {/* 2루 (상단) */}
+      <div className="absolute top-0">
+        <Base active={runners.second} label="2B" />
       </div>
+      {/* 3루 (좌측) */}
+      <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+        <Base active={runners.third} label="3B" />
+      </div>
+      {/* 1루 (우측) */}
+      <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+        <Base active={runners.first} label="1B" />
+      </div>
+      
+      {/* 베이스를 잇는 다이아몬드 선 */}
+      <div className="absolute inset-0 m-auto w-32 h-32 border-2 border-surface-tertiary transform rotate-45"></div>
     </div>
   );
 };
