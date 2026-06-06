@@ -1,6 +1,7 @@
 import express from 'express';
 import Player from '../models/Player.js';
 import Game from '../models/Game.js';
+import RawPlayer from '../models/RawPlayer.js';
 import { calculateFatigue, getFatigueLevel } from '../../../packages/fatigue-engine/index.js';
 
 const router = express.Router();
@@ -11,6 +12,25 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const players = await Player.find({}).populate('team', 'name logoUrl');
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+// @desc    Search raw players (원본 CSV 데이터 검색)
+// @route   GET /api/players/raw/search
+// @access  Public
+router.get('/raw/search', async (req, res) => {
+  try {
+    const query = req.query.q;
+    let filter = {};
+    if (query) {
+      // '선수명' 필드에서 텍스트가 포함된 데이터 검색
+      filter = { '선수명': { $regex: query, $options: 'i' } };
+    }
+    // 화면 과부하 방지를 위해 최대 100개까지만 반환
+    const players = await RawPlayer.find(filter).limit(100);
     res.json(players);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });

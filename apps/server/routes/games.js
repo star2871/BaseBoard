@@ -42,6 +42,23 @@ router.get('/next', async (req, res) => {
   }
 });
 
+// @desc    Fetch upcoming scheduled games
+// @route   GET /api/games/upcoming
+// @access  Public
+router.get('/upcoming', async (req, res) => {
+  try {
+    const upcomingGames = await Game.find({ status: 'Scheduled' })
+      .sort({ date: 1 })
+      .limit(10)
+      .populate('homeTeam', 'name logoUrl stadium location')
+      .populate('awayTeam', 'name logoUrl stadium location');
+
+    res.json(upcomingGames);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 // @desc    Update live game state
 // @route   PUT /api/games/:id/live
 // @access  Private (for now, public)
@@ -60,7 +77,11 @@ router.put('/:id/live', async (req, res) => {
     // Merge nested liveState object
     game.liveState = { ...game.liveState, ...req.body };
 
-    const updatedGame = await game.save();
+    await game.save();
+
+    const updatedGame = await Game.findById(game._id)
+      .populate('homeTeam', 'name logoUrl')
+      .populate('awayTeam', 'name logoUrl');
 
     if (req.io) {
       req.io.emit('game:live:updated', updatedGame);

@@ -62,8 +62,11 @@ const runSimulation = async () => {
           liveGame.liveState.balls = 0;
         }
         
-        const updatedGame = await liveGame.save();
-        io.emit('game:live:updated', updatedGame);
+        await liveGame.save();
+        const populatedGame = await Game.findById(liveGame._id)
+          .populate('homeTeam', 'name logoUrl')
+          .populate('awayTeam', 'name logoUrl');
+        io.emit('game:live:updated', populatedGame);
         console.log(`Game Updated: ${liveGame.homeScore} : ${liveGame.awayScore}`);
       }
 

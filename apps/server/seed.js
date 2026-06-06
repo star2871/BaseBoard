@@ -29,11 +29,11 @@ const seedDatabase = async () => {
     await Game.deleteMany({});
 
     const teamsData = [
-      { name: 'LG 트윈스', logoUrl: 'https://www.lgtwins.com/static/images/common/logo.png', stadium: '잠실 야구장', location: { lat: 37.52, lng: 127.05 } },
-      { name: '삼성 라이온즈', logoUrl: 'https://www.samsunglions.com/static/images/common/logo.png', stadium: '대구 삼성 라이온즈 파크', location: { lat: 35.86, lng: 128.62 } },
-      { name: 'KIA 타이거즈', logoUrl: 'https://www.kiatigers.com/static/images/common/logo.png', stadium: '광주 기아 챔피언스 필드', location: { lat: 35.14, lng: 126.85 } },
-      { name: '두산 베어스', logoUrl: 'https://www.doosanbears.com/static/images/common/logo.png', stadium: '잠실 야구장', location: { lat: 37.52, lng: 127.05 } },
-      { name: 'SSG 랜더스', logoUrl: 'https://www.ssglanders.com/static/images/common/logo.png', stadium: '문학 경기장', location: { lat: 37.43, lng: 126.67 } },
+      { name: 'LG 트윈스', logoUrl: '/images/lg로고.png', stadium: '잠실 야구장', location: { lat: 37.52, lng: 127.05 } },
+      { name: '삼성 라이온즈', logoUrl: '/images/samsung.png', stadium: '대구 삼성 라이온즈 파크', location: { lat: 35.86, lng: 128.62 } },
+      { name: 'KIA 타이거즈', logoUrl: '/images/기아로고.png', stadium: '광주 기아 챔피언스 필드', location: { lat: 35.14, lng: 126.85 } },
+      { name: '두산 베어스', logoUrl: '/images/두산로고.png', stadium: '잠실 야구장', location: { lat: 37.52, lng: 127.05 } },
+      { name: 'SSG 랜더스', logoUrl: '/images/ssg.png', stadium: '문학 경기장', location: { lat: 37.43, lng: 126.67 } },
     ];
 
     console.log('Seeding teams...');

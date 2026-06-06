@@ -61,8 +61,12 @@ const startSimulation = async () => {
           });
           if (liveGame.realtimeEvents.length > 20) liveGame.realtimeEvents.shift();
         }
-        const updatedGame = await liveGame.save();
-        io.emit('game:live:updated', updatedGame);
+        
+        await liveGame.save();
+        const populatedGame = await Game.findById(liveGame._id)
+          .populate('homeTeam', 'name logoUrl')
+          .populate('awayTeam', 'name logoUrl');
+        io.emit('game:live:updated', populatedGame);
       }
 
       // 2. Simulate Player Fatigue
