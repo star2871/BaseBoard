@@ -100,6 +100,9 @@ const startSimulation = async () => {
   }, 5000);
 };
 
+// 프론트엔드 빌드 파일 서빙
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // 모든 라우트가 아닌 요청에 대해 index.html 반환 (React 라우팅 처리)
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
