@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bell, Moon, Database, Shield, Save, User } from 'lucide-react';
 
 const SettingsPage = () => {
@@ -7,6 +7,16 @@ const SettingsPage = () => {
   const [emailEnabled, setEmailEnabled] = useState(() => JSON.parse(localStorage.getItem('setting_email') ?? 'false'));
   const [autoSync, setAutoSync] = useState(() => JSON.parse(localStorage.getItem('setting_sync') ?? 'true'));
   const [darkMode, setDarkMode] = useState(() => JSON.parse(localStorage.getItem('setting_dark') ?? 'true'));
+
+  // 컴포넌트 마운트 시 다크 모드 설정 적용
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]); // darkMode 상태가 변경될 때마다 실행
+
 
   // 토글 스위치 UI 컴포넌트
   const Toggle = ({ enabled, onChange }) => (
