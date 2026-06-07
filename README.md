@@ -88,7 +88,7 @@ BASEBOARD는 야구팀의 성과를 분석하고 선수들의 컨디션을 관�
 
     # 프론트엔드 서버 실행 (새 터미널)
     cd apps/client
-    npm run dev
+    npm run dev 
     ```
 
 5.  **접속**: 웹 브라우저에서 `http://localhost:5173`으로 접속합니다.
