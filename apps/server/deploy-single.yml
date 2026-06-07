@@ -1,0 +1,32 @@
+name: Deploy to Render (Single Service)
+
+on:
+  push:
+    branches:
+      - master # master 브랜치에 푸시될 때마다 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # 프로젝트에 맞는 Node.js 버전 지정
+
+    - name: Install root dependencies
+      run: npm install
+
+    - name: Build Frontend (client)
+      run: npm run build --prefix apps/client
+
+    - name: Deploy Backend (serving frontend) to Render
+      env:
+        RENDER_WEB_SERVICE_DEPLOY_HOOK: ${{ secrets.RENDER_WEB_SERVICE_DEPLOY_HOOK }}
+      run: |
+        curl -X POST -d {} $RENDER_WEB_SERVICE_DEPLOY_HOOK
+        echo "Fullstack service deployment triggered on Render."
