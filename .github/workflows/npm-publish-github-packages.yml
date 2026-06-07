@@ -3,7 +3,7 @@ name: Deploy to Render (Single Service)
 on:
   push:
     branches:
-      - master # master 브랜치에 푸시될 때마다 실행
+      - master # main 브랜치에 푸시될 때마다 실행
 
 jobs:
   deploy:
