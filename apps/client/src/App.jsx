@@ -18,7 +18,7 @@ function App() {
   const disconnectSocket = useSocketStore((state) => state.disconnect);
 
   useEffect(() => {
-    connectSocket();
+    connectSocket(window.location.origin); // 현재 도메인으로 Socket.io 연결
     return () => {
       disconnectSocket();
     };

@@ -5,10 +5,15 @@ import useGameStore from './gameStore';
 
 const useSocketStore = create((set, get) => ({
   socket: null,
-  connect: () => {
+  connect: (backendUrl) => {
     if (get().socket) return;
 
-    const socket = io(import.meta.env.VITE_SERVER_URL || 'http://localhost:4000');
+    // backendUrl이 제공되지 않으면 현재 윈도우의 오리진을 사용 (동일 도메인 배포 시)
+    const url = backendUrl || import.meta.env.VITE_SERVER_URL || 'http://localhost:4000';
+    const socket = io(url, {
+      transports: ['websocket'],
+      upgrade: false,
+    });
 
     socket.on('connect', () => {
       console.log('Socket connected:', socket.id);
