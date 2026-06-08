@@ -11,6 +11,7 @@ const DashboardPage = () => {
   const [notifications, setNotifications] = useState([]);
   const socket = useSocketStore((state) => state.socket);
   const { liveGame, setLiveGame } = useGameStore();
+  const [dashboardError, setDashboardError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +25,8 @@ const DashboardPage = () => {
         const data = await response.json();
         setLiveGame(data);
       } catch (error) {
-        console.error('Error fetching live game:', error);
+        console.error('Error fetching live game on dashboard:', error);
+        setDashboardError('실시간 경기 정보를 불러오는 데 실패했습니다.');
       }
     };
     fetchLiveGame();
@@ -60,6 +62,10 @@ const DashboardPage = () => {
   };
 
   return (
+    // 대시보드 전체 에러 메시지 표시
+    {dashboardError && (
+      <div className="p-4 mb-4 text-danger bg-red-900/20 rounded-md">{dashboardError}</div>
+    )}
     <div>
       <h1 className="text-3xl font-bold text-text-primary mb-6">대시보드 개요</h1>
       
