@@ -3,16 +3,19 @@ import { createRequire } from 'module';
 
 let serviceAccount;
 
+// Render와 같은 프로덕션 환경에서는 FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수를 사용합니다.
 if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-  // 프로덕션 환경(예: Render)에서는 환경 변수를 사용합니다.
+  console.log('Firebase 인증: FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수를 사용하여 초기화합니다.');
   try {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
   } catch (e) {
     console.error('FIREBASE_SERVICE_ACCOUNT_JSON 파싱에 실패했습니다. 유효한 JSON 문자열인지 확인하세요.', e);
     process.exit(1);
   }
-} else {
-  // 로컬 개발 환경에서는 JSON 파일에서 직접 로드합니다.
+}
+// 로컬 개발 환경에서는 serviceAccountKey.json 파일을 직접 사용합니다.
+else {
+  console.log('Firebase 인증: 로컬 serviceAccountKey.json 파일을 사용하여 초기화합니다.');
   const require = createRequire(import.meta.url);
   try {
     serviceAccount = require('./serviceAccountKey.json');
