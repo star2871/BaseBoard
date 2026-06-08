@@ -37,3 +37,6 @@ coverage/
 # Firebase 관련
 firebase-debug.log
 .firebase/
+
+# Firebase Admin SDK service account key
+/apps/server/serviceAccountKey.json

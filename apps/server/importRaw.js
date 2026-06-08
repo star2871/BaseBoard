@@ -16,14 +16,14 @@ const csvFilePath = path.join(__dirname, '../../docs/kbo_dataset_kr_fixed.csv');
 const rawPlayerSchema = new mongoose.Schema({}, { strict: false, collection: 'players_raw' });
 const RawPlayer = mongoose.model('RawPlayer', rawPlayerSchema);
 
+const MY_ATLAS_URI = process.env.MONGO_URI;
+if (!MY_ATLAS_URI || MY_ATLAS_URI.includes('<아이디>')) {
+  console.error('❌ .env 파일에 올바른 MONGO_URI가 설정되지 않았습니다! MONGO_URI를 확인해주세요.');
+  process.exit(1);
+}
+
 async function importCsvToMongo() {
   try {
-    // .env 파일에서 MONGO_URI 환경변수 가져오기
-    const MY_ATLAS_URI = process.env.MONGO_URI;
-
-    if (!MY_ATLAS_URI || MY_ATLAS_URI.includes('<아이디>')) {
-      throw new Error('❌ .env 파일에 올바른 MONGO_URI가 설정되지 않았습니다!');
-    }
     await mongoose.connect(MY_ATLAS_URI);
     
     const isAtlas = MY_ATLAS_URI.includes('mongodb+srv://');

@@ -22,11 +22,13 @@ const io = new Server(server, {
   cors: { origin: "*" }
 });
 
+if (!process.env.MONGO_URI) {
+  console.error('Error: MONGO_URI is not defined in .env file. Please check apps/server/.env');
+  process.exit(1);
+}
+
 const runSimulation = async () => {
   try {
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI is not defined in .env file. Please check apps/server/.env');
-    }
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Simulator connected to MongoDB...');
 

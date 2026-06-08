@@ -20,15 +20,15 @@ const getRelativeDate = (daysOffset) => {
   return date;
 };
 
+const MY_ATLAS_URI = process.env.MONGO_URI;
+if (!MY_ATLAS_URI || MY_ATLAS_URI.includes('<아이디>')) {
+  console.error('❌ .env 파일에 올바른 MONGO_URI가 설정되지 않았습니다! MONGO_URI를 확인해주세요.');
+  process.exit(1);
+}
+
 async function seedDatabase() {
   try {
     console.log('🌱 MongoDB 연결 중...');
-    
-    // .env 파일에서 MONGO_URI 가져오기 (클라우드 Atlas 연결)
-    const MY_ATLAS_URI = process.env.MONGO_URI;
-    if (!MY_ATLAS_URI || MY_ATLAS_URI.includes('<아이디>')) {
-      throw new Error('❌ .env 파일에 올바른 MONGO_URI가 설정되지 않았습니다!');
-    }
     await mongoose.connect(MY_ATLAS_URI);
     const isAtlas = MY_ATLAS_URI.includes('mongodb+srv://');
     console.log(`✅ 연결된 데이터베이스: ${isAtlas ? 'MongoDB Atlas (클라우드) ☁️' : '로컬 MongoDB 💻'}`);

@@ -13,11 +13,13 @@ const __dirname = path.dirname(__filename);
 // Load .env from the current directory of this script
 dotenv.config({ path: path.join(__dirname, '.env') });
 
+if (!process.env.MONGO_URI) {
+  console.error('Error: MONGO_URI is not defined in .env file. Please check apps/server/.env');
+  process.exit(1);
+}
+
 const seedDatabase = async () => {
   try {
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI is not defined in .env file. Please check apps/server/.env');
-    }
     await mongoose.connect(process.env.MONGO_URI);
     
     const isAtlas = process.env.MONGO_URI.includes('mongodb+srv://');

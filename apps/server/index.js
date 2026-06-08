@@ -9,6 +9,7 @@ import connectDB from './db.js';
 import playerRoutes from './routes/players.js';
 import teamRoutes from './routes/teams.js';
 import gameRoutes from './routes/games.js';
+import authRoutes from './routes/auth.js';
 
 import Game from './models/Game.js';
 import Player from './models/Player.js';
@@ -17,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { calculateFatigue, getFatigueLevel } from '../../packages/fatigue-engine/index.js';
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 connectDB();
 
 const PORT = process.env.PORT || 4000;
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/api/players', playerRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/games', gameRoutes);
+app.use('/api/auth', authRoutes);
 
 const startSimulation = async () => {
   console.log('🚀 Starting real-time simulation engine...');
