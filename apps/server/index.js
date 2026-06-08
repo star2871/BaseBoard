@@ -26,7 +26,7 @@ if (!process.env.MONGO_URI) {
   console.error(`[치명적 오류] 환경 변수 MONGO_URI가(이) 설정되지 않았습니다. 애플리케이션을 시작할 수 없습니다.`);
   process.exit(1);
 }
-const startSimulation = async () => {
+const startSimulation = async (io) => { // io를 인자로 받도록 수정
   console.log('🚀 Starting real-time simulation engine...');
   
   setInterval(async () => {
@@ -118,7 +118,7 @@ app.get('*', (req, res) => {
 
     httpServer.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
-      startSimulation(); // MongoDB 연결 후 시뮬레이션 시작
+      startSimulation(io); // io 객체를 전달하여 시뮬레이션 시작
     });
   } catch (error) {
     console.error('Failed to initialize server:', error);
