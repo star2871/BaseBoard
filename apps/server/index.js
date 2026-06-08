@@ -26,34 +26,6 @@ if (!process.env.MONGO_URI) {
   console.error(`[치명적 오류] 환경 변수 MONGO_URI가(이) 설정되지 않았습니다. 애플리케이션을 시작할 수 없습니다.`);
   process.exit(1);
 }
-
-const PORT = process.env.PORT || 4000;
-
-const app = express();
-app.use(express.json());
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    // 프론트엔드가 백엔드와 같은 도메인에서 서빙되므로 CORS 설정은 필요 없거나,
-    // 개발 환경을 위해 localhost를 유지할 수 있습니다.
-    // 배포 시에는 이 부분을 제거하거나, '*'로 설정하여 모든 오리진을 허용할 수 있습니다.
-    // 여기서는 프론트엔드가 백엔드에 의해 서빙되므로 제거합니다.
-    // origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT"]
-  }
-});
-
-app.use((req, res, next) => { req.io = io; next(); });
-
-// 프론트엔드 빌드 파일 서빙
-app.use(express.static(path.join(__dirname, '../client/dist')));
-
-// API 라우트
-app.use('/api/players', playerRoutes);
-app.use('/api/teams', teamRoutes);
-app.use('/api/games', gameRoutes);
-app.use('/api/auth', authRoutes);
-
 const startSimulation = async () => {
   console.log('🚀 Starting real-time simulation engine...');
   
@@ -108,15 +80,50 @@ const startSimulation = async () => {
   }, 5000);
 };
 
-// 프론트엔드 빌드 파일 서빙
-app.use(express.static(path.join(__dirname, '../client/dist')));
+async function initializeServer() {
+  try {
+    await connectDB(); // MongoDB 연결이 완료될 때까지 기다립니다.
+    
+    const PORT = process.env.PORT || 4000;
+
+    const app = express();
+    app.use(express.json());
+    const httpServer = createServer(app);
+    const io = new Server(httpServer, {
+      cors: {
+        // 프론트엔드가 백엔드와 같은 도메인에서 서빙되므로 CORS 설정은 필요 없거나,
+        // 개발 환경을 위해 localhost를 유지할 수 있습니다.
+        // 배포 시에는 이 부분을 제거하거나, '*'로 설정하여 모든 오리진을 허용할 수 있습니다.
+        // 여기서는 프론트엔드가 백엔드에 의해 서빙되므로 제거합니다.
+        // origin: process.env.CLIENT_URL || "http://localhost:5173",
+        methods: ["GET", "POST", "PUT"]
+      }
+    });
+
+    app.use((req, res, next) => { req.io = io; next(); });
+
+    // 프론트엔드 빌드 파일 서빙
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    // API 라우트
+    app.use('/api/players', playerRoutes);
+    app.use('/api/teams', teamRoutes);
+    app.use('/api/games', gameRoutes);
+    app.use('/api/auth', authRoutes);
 
 // 모든 라우트가 아닌 요청에 대해 index.html 반환 (React 라우팅 처리)
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-  startSimulation();
-});
+    httpServer.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+      startSimulation(); // MongoDB 연결 후 시뮬레이션 시작
+    });
+  } catch (error) {
+    console.error('Failed to initialize server:', error);
+    process.exit(1);
+  }
+}
+
+initializeServer();
