@@ -1,39 +1,67 @@
 import express from 'express';
-import admin from '../firebaseAdmin.js';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 const router = express.Router();
 
-// @desc    Register a new user with email and password
+// JWT 생성 헬퍼
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+};
+
+// @desc    Register a new user
 // @route   POST /api/auth/signup
 // @access  Public
 router.post('/signup', async (req, res) => {
-  try {
-    const { email, password, displayName } = req.body;
+  const { displayName, email, password } = req.body;
 
-    // 간단한 유효성 검사
-    if (!email || !password || !displayName) {
-      return res.status(400).json({ message: '이메일, 비밀번호, 이름을 모두 입력해주세요.' });
+  try {
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      return res.status(400).json({ message: '이미 가입된 이메일입니다.' });
     }
 
-    const userRecord = await admin.auth().createUser({
+    const user = await User.create({
+      displayName,
       email,
       password,
-      displayName,
     });
 
-    // 참고: 여기서 Firebase에 생성된 사용자의 uid(userRecord.uid)를 사용하여
-    // 여러분의 MongoDB 데이터베이스에도 사용자 프로필을 생성할 수 있습니다.
-
-    res.status(201).json({
-      message: '사용자가 성공적으로 생성되었습니다.',
-      uid: userRecord.uid,
-    });
-  } catch (error) {
-    console.error('신규 사용자 생성 오류:', error);
-    if (error.code === 'auth/email-already-exists') {
-      return res.status(409).json({ message: '이미 사용 중인 이메일 주소입니다.' });
+    if (user) {
+      // 회원가입 성공 시 바로 토큰을 반환하지 않고, 로그인 페이지로 유도합니다.
+      res.status(201).json({ message: '회원가입이 성공적으로 완료되었습니다.' });
+    } else {
+      res.status(400).json({ message: '유효하지 않은 사용자 정보입니다.' });
     }
-    res.status(500).json({ message: '서버에서 사용자 생성 중 오류가 발생했습니다.' });
+  } catch (error) {
+    res.status(500).json({ message: '서버 오류가 발생했습니다.', error: error.message });
+  }
+});
+
+// @desc    Auth user & get token
+// @route   POST /api/auth/login
+// @access  Public
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      res.json({
+        _id: user._id,
+        displayName: user.displayName,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401).json({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: '서버 오류가 발생했습니다.', error: error.message });
   }
 });
 
