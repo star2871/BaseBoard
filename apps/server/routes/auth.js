@@ -37,7 +37,8 @@ router.post('/signup', async (req, res) => {
       res.status(400).json({ message: '유효하지 않은 사용자 정보입니다.' });
     }
   } catch (error) {
-    res.status(500).json({ message: '서버 오류가 발생했습니다.', error: error.message });
+    console.error('Signup Error:', error); // 서버 콘솔에 실제 에러를 기록합니다.
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 });
 
@@ -61,7 +62,8 @@ router.post('/login', async (req, res) => {
       res.status(401).json({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
     }
   } catch (error) {
-    res.status(500).json({ message: '서버 오류가 발생했습니다.', error: error.message });
+    console.error('Login Error:', error); // 서버 콘솔에 실제 에러를 기록합니다.
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 });
 
