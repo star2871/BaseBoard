@@ -17,8 +17,17 @@ import Player from './models/Player.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { calculateFatigue, getFatigueLevel } from '../../packages/fatigue-engine/index.js';
-
 dotenv.config({ path: path.join(__dirname, '.env') });
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
+
+for (const varName of requiredEnvVars) {
+  if (!process.env[varName]) {
+    console.error(`[치명적 오류] 환경 변수 ${varName}가(이) 설정되지 않았습니다. 애플리케이션을 시작할 수 없습니다.`);
+    process.exit(1); // 0이 아닌 상태 코드로 즉시 종료
+  }
+}
+
+
 connectDB();
 
 const PORT = process.env.PORT || 4000;
