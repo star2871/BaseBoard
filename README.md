@@ -1,6 +1,6 @@
 # BASEBOARD: 야구 분석 대시보드 (Baseball Analytics Dashboard)
 
-!alt text
+![alt text](<docs/야구 분석 대시보드 UI 디자인 와이드프레임.png>)
 
 ## 🚀 주요 기능
 
