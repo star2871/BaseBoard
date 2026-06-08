@@ -1,24 +1,24 @@
 import admin from 'firebase-admin';
 
-let serviceAccount;
+let firebaseAdmin = null;
 
-// 프로덕션 및 로컬 환경 모두 FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수를 사용합니다.
+// FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수가 있을 경우에만 Firebase Admin을 초기화합니다.
 if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-  console.log('Firebase 인증: FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수를 사용하여 초기화합니다.');
   try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+    firebaseAdmin = admin;
+    console.log('✅ Firebase Admin SDK가 성공적으로 초기화되었습니다.');
   } catch (e) {
-    console.error('FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수 파싱에 실패했습니다. 유효한 JSON 문자열인지 확인하세요.', e);
-    process.exit(1);
+    // 환경 변수가 있지만 파싱에 실패한 경우, 경고만 하고 앱이 중단되지는 않습니다.
+    console.warn('⚠️ Firebase Admin SDK 초기화 실패: FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수의 형식이 올바르지 않습니다.', e.message);
   }
-  } else {
-  // 환경 변수가 없을 경우, 로컬/프로덕션 모두에서 에러를 발생시키고 종료합니다.
-  console.error("오류: FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수가 설정되지 않았습니다. 로컬 개발을 위해서는 'apps/server/.env' 파일에 해당 변수를 설정해야 합니다.");
-  process.exit(1);
+} else {
+  // 환경 변수가 없는 것은 정상적인 상황일 수 있으므로 경고 메시지를 출력합니다.
+  console.warn("ℹ️ FIREBASE_SERVICE_ACCOUNT_JSON 환경 변수가 없어 Firebase Admin SDK가 초기화되지 않았습니다. Firebase 관련 기능은 동작하지 않습니다.");
 }
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-export default admin;
+// 초기화된 admin 객체 또는 null을 내보냅니다.
+export default firebaseAdmin;

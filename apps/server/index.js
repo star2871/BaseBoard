@@ -27,8 +27,6 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 
-connectDB();
-
 const PORT = process.env.PORT || 4000;
 
 const app = express();

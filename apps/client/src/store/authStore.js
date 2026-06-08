@@ -5,16 +5,15 @@ const useAuthStore = create(
   persist(
     (set) => ({
       userInfo: null,
-      token: null,
       login: (userData) => {
         set({ userInfo: {
           _id: userData._id,
           displayName: userData.displayName,
           email: userData.email,
-        }, token: userData.token });
+        } });
       },
       logout: () => {
-        set({ userInfo: null, token: null });
+        set({ userInfo: null });
       },
     }),
     {
