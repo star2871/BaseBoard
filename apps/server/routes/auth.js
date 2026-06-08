@@ -1,15 +1,7 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const router = express.Router();
-
-// JWT 생성 헬퍼
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-};
 
 // @desc    Register a new user
 // @route   POST /api/auth/signup
@@ -56,7 +48,6 @@ router.post('/login', async (req, res) => {
         _id: user._id,
         displayName: user.displayName,
         email: user.email,
-        token: generateToken(user._id),
       });
     } else {
       res.status(401).json({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' });

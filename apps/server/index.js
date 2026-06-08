@@ -27,14 +27,6 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 
-// JWT_SECRET은 프로덕션 환경에서 필수입니다. 로컬 개발 시에는 경고만 합니다.
-if (!process.env.JWT_SECRET) {
-  if (!isDevelopment) {
-    console.error(`[치명적 오류] 환경 변수 JWT_SECRET가(이) 설정되지 않았습니다. 애플리케이션을 시작할 수 없습니다.`);
-    process.exit(1); // 0이 아닌 상태 코드로 즉시 종료
-  }
-  console.warn(`[경고] 로컬 개발 환경에서 JWT_SECRET 환경 변수가 설정되지 않았습니다. 로그인 기능이 정상적으로 작동하지 않을 수 있습니다.`);
-}
 connectDB();
 
 const PORT = process.env.PORT || 4000;
